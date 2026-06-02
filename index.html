@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+<title>Tu primera casa en Miami</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1f3d34;       /* acento de marca (CONFIG) */
+    --primary-soft:#eef2f0;
+    --ink:#16140f;
+    --bg:#f4f0e9;
+    --card:#ffffff;
+    --muted:#928a7c;
+    --line:#e7e1d6;
+    --track:#e7e1d6;
+    --wa:#1f3d34;
+    --serif:'Fraunces',Georgia,'Times New Roman',serif;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .app{max-width:430px;margin:0 auto;min-height:100%;background:var(--card);
+    display:flex;flex-direction:column;box-shadow:0 0 80px rgba(22,20,15,.06)}
+
+  /* topbar */
+  .top{display:flex;align-items:center;justify-content:space-between;padding:20px 22px 0}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0}
+  .brand img{height:30px;width:auto;object-fit:contain}
+  .brand .name{font-family:var(--serif);font-weight:500;font-size:17px;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lang{display:flex;gap:2px}
+  .lang button{border:0;background:transparent;padding:6px 8px;font-size:12px;font-weight:600;letter-spacing:.5px;color:var(--muted);cursor:pointer}
+  .lang button.on{color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1.5px}
+
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:2.4px;text-transform:uppercase;color:var(--primary)}
+  .screen{flex:1;display:flex;flex-direction:column;padding:30px 26px 26px}
+
+  h1{font-family:var(--serif);font-weight:500;font-size:33px;line-height:1.12;letter-spacing:-.4px;color:var(--ink)}
+  .lead{color:var(--muted);font-size:16px;margin-top:14px;max-width:30ch}
+
+  .btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;border:0;border-radius:2px;
+    padding:18px;font-family:var(--sans);font-size:15px;font-weight:600;letter-spacing:.2px;cursor:pointer;
+    text-decoration:none;transition:opacity .15s}
+  .btn:active{opacity:.85}
+  .btn-primary{background:var(--primary);color:#fff}
+  .btn-outline{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn-wa{background:var(--wa);color:#fff}
+  .btn-wa svg{width:18px;height:18px;fill:#fff;flex:none;opacity:.9}
+  .btn-text{border:0;background:transparent;color:var(--muted);font-family:var(--sans);font-size:15px;font-weight:500;padding:14px;width:auto;cursor:pointer}
+
+  .spacer{flex:1}
+  .foot{margin-top:24px}
+  .trust{margin-top:18px;text-align:center;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted)}
+
+  /* quiz */
+  .dots{display:flex;gap:7px;margin-bottom:28px}
+  .dots i{width:7px;height:7px;border-radius:99px;background:var(--line);transition:width .35s ease,background .35s ease}
+  .dots i.done{background:var(--primary)}
+  .dots i.cur{width:24px;background:var(--primary)}
+  .qtitle{font-family:var(--serif);font-weight:500;font-size:27px;line-height:1.18;letter-spacing:-.3px}
+  .qsub{color:var(--muted);font-size:15px;margin-top:10px}
+  .qbody{margin-top:34px}
+
+  .valbig{font-family:var(--serif);font-size:40px;font-weight:500;letter-spacing:-.5px;text-align:center;margin-bottom:10px}
+  .valbig small{font-family:var(--sans);font-size:15px;color:var(--muted);font-weight:500;letter-spacing:0}
+  /* reacción en vivo del slider — Miami responde a cada número */
+  .live{text-align:center;color:var(--primary);font-size:13.5px;font-weight:500;line-height:1.45;
+    min-height:38px;margin-bottom:20px;padding:0 10px}
+  @keyframes livepop{from{opacity:.3;transform:translateY(3px)}to{opacity:1;transform:none}}
+  .live.pop{animation:livepop .2s ease}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:2px;border-radius:2px;background:var(--track);outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;
+    background:var(--card);border:1.5px solid var(--primary);cursor:pointer;box-shadow:0 1px 3px rgba(22,20,15,.18)}
+  input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--card);border:1.5px solid var(--primary);cursor:pointer}
+  .ends{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:16px}
+
+  input[type=text]{width:100%;padding:14px 2px;border:0;border-bottom:1px solid var(--line);
+    font-family:var(--serif);font-size:26px;font-weight:500;color:var(--ink);background:transparent}
+  input[type=text]::placeholder{color:#cfc7b8}
+  input[type=text]:focus{outline:none;border-bottom-color:var(--primary)}
+
+  .choices{display:flex;flex-direction:column;gap:12px}
+  .choice{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 20px;border:1px solid var(--line);
+    border-radius:2px;background:var(--card);cursor:pointer;transition:border-color .15s,background .15s}
+  .choice .ch-h{font-size:16px;font-weight:500;color:var(--ink)}
+  .choice .ch-s{font-size:13px;color:var(--muted);margin-top:3px;line-height:1.4}
+  .choice .mk{width:20px;height:20px;border-radius:50%;border:1px solid var(--line);flex:none;position:relative;transition:all .15s}
+  .choice.on{border-color:var(--primary);background:var(--primary-soft)}
+  .choice.on .mk{border-color:var(--primary);background:var(--primary)}
+  .choice.on .mk::after{content:"";position:absolute;left:6px;top:3px;width:5px;height:9px;border:solid #fff;border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
+
+  .navrow{display:flex;align-items:center;gap:14px;margin-top:30px}
+  .navrow .btn-primary{flex:1}
+
+  /* loading */
+  .load{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .load .bar{width:140px;height:1px;background:var(--line);overflow:hidden;margin-top:22px;position:relative}
+  .load .bar i{position:absolute;left:-40%;width:40%;height:1px;background:var(--primary);animation:sweep 1.1s ease-in-out infinite}
+  @keyframes sweep{to{left:100%}}
+  .load .t{font-family:var(--serif);font-size:21px;font-weight:500}
+  .load .s{color:var(--muted);font-size:13px;letter-spacing:.4px;margin-top:8px}
+
+  /* result */
+  .vert{margin-bottom:6px}
+  .vert .eyebrow{display:block;margin-bottom:14px}
+  .vhead{font-family:var(--serif);font-weight:500;font-size:29px;line-height:1.16;letter-spacing:-.3px}
+  .taste{color:var(--muted);font-size:16px;margin-top:14px}
+  .taste b{color:var(--ink);font-weight:600}
+
+  .lockwrap{position:relative;margin-top:28px}
+  .locked{filter:blur(8px);user-select:none;pointer-events:none}
+  .lockinner{border:1px solid var(--line);padding:26px 22px}
+  .lockinner .lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:center}
+  .lockinner .price{font-family:var(--serif);font-weight:500;font-size:44px;letter-spacing:-1px;text-align:center;margin-top:8px}
+  .lockinner .rng{text-align:center;color:var(--muted);font-size:13px;margin-top:6px}
+  .brk{margin-top:22px}
+  .row{display:flex;justify-content:space-between;align-items:baseline;padding:13px 0;border-top:1px solid var(--line);font-size:14px}
+  .row .k{color:var(--muted)} .row .v{font-weight:600;font-variant-numeric:tabular-nums}
+  .row.total .k{color:var(--ink);font-weight:600}
+  .row.total .v{font-family:var(--serif);font-size:18px;font-weight:600}
+
+  .overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:24px;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.85))}
+  .overlay .oh{font-family:var(--serif);font-size:21px;font-weight:500}
+  .overlay .os{color:var(--muted);font-size:13.5px;margin:10px 0 20px;max-width:30ch;line-height:1.55}
+  .overlay .btn{max-width:320px}
+
+  .callout{border-left:2px solid var(--primary);padding:4px 0 4px 16px;margin-top:26px;font-size:14px;color:var(--ink);line-height:1.55}
+  .callout b{font-weight:600}
+
+  #unlockedExtra{display:none;margin-top:26px}
+  .homes{text-align:center;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:22px}
+  .homes .h{font-family:var(--serif);font-size:20px;font-weight:500}
+  .homes .s{color:var(--muted);font-size:14px;margin-top:8px}
+
+  .how{margin-top:24px}
+  .how summary{cursor:pointer;font-size:12px;letter-spacing:.4px;color:var(--muted);list-style:none}
+  .how summary::-webkit-details-marker{display:none}
+  .how summary::after{content:" +";color:var(--muted)}
+  .how[open] summary::after{content:" –"}
+  .how .b{font-size:13px;color:var(--muted);margin-top:14px;line-height:1.7}
+  .how .b li{margin-left:18px;margin-bottom:4px}
+
+  .disc{font-size:11px;color:var(--muted);margin-top:24px;line-height:1.6;text-align:center}
+  .pw{text-align:center;color:var(--muted);font-size:11px;letter-spacing:.4px;padding:16px}
+  .pw a{color:var(--muted)}
+
+  /* reactive microcopy — hace que cada paso "responda" (no es un form) */
+  .qreact{color:var(--primary);font-size:13.5px;font-weight:500;letter-spacing:.1px;margin-top:14px;
+    opacity:0;transform:translateY(4px);transition:opacity .35s ease,transform .35s ease}
+  .qreact.in{opacity:1;transform:none}
+  .qreact:empty{display:none}
+
+  /* loading steps */
+  .load .step{opacity:0;transition:opacity .3s ease}
+  .load .step.in{opacity:1}
+
+  /* lead gate (captura el lead aunque no abra WhatsApp) */
+  .gate{width:100%;max-width:320px;display:flex;flex-direction:column;gap:10px;margin-top:2px}
+  .gate input{width:100%;padding:15px 16px;border:1px solid var(--line);border-radius:2px;background:#fff;
+    font-family:var(--sans);font-size:16px;color:var(--ink);transition:border-color .15s}
+  .gate input::placeholder{color:#b8b0a2}
+  .gate input:focus{outline:none;border-color:var(--primary)}
+  .gate input.bad{border-color:#c0492f;background:#fdf3f1}
+  .gate .btn{margin-top:2px}
+  .consent{font-size:11px;color:var(--muted);text-align:center;line-height:1.5;margin-top:4px}
+
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="top">
+    <div class="brand"><img id="brandLogo" alt="" style="display:none" /><span class="name" id="brandName"></span></div>
+    <div class="lang"><button id="btnEs" class="on" onclick="setLang('es')">ES</button><button id="btnEn" onclick="setLang('en')">EN</button></div>
+  </div>
+
+  <!-- WELCOME -->
+  <div class="screen" id="screen-welcome">
+    <div class="eyebrow" id="w-pill"></div>
+    <h1 id="w-title" style="margin-top:18px"></h1>
+    <p class="lead" id="w-sub"></p>
+    <div class="spacer"></div>
+    <div class="foot">
+      <button class="btn btn-primary" id="w-btn" onclick="startQuiz()"></button>
+      <div class="trust" id="w-trust"></div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen hidden" id="screen-quiz">
+    <div class="dots" id="qDots"></div>
+    <div class="qtitle" id="qTitle"></div>
+    <div class="qsub" id="qSub"></div>
+    <div class="qreact" id="qReact"></div>
+    <div class="qbody" id="qBody"></div>
+    <div class="spacer"></div>
+    <div class="navrow">
+      <button class="btn-text hidden" id="backBtn" onclick="prevStep()"></button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextStep()"></button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="screen hidden" id="screen-loading">
+    <div class="load">
+      <div class="t step" id="loadTxt"></div>
+      <div class="s" id="loadSub"></div>
+      <div class="bar"><i></i></div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen hidden" id="screen-result">
+    <div class="vert">
+      <span class="eyebrow" id="vEyebrow"></span>
+      <div class="vhead" id="vHead"></div>
+      <div class="taste" id="vTaste"></div>
+    </div>
+
+    <div class="lockwrap" id="lockWrap">
+      <div class="lockinner locked" id="lockContent">
+        <div class="lbl" id="lockLbl"></div>
+        <div class="price" id="lockPrice"></div>
+        <div class="rng" id="lockRng"></div>
+        <div class="brk" id="lockBrk"></div>
+      </div>
+      <div class="overlay" id="lockOverlay">
+        <div class="oh" id="oHead"></div>
+        <div class="os" id="oHint"></div>
+        <div class="gate">
+          <input type="tel" id="inPhone" inputmode="tel" autocomplete="tel" onkeydown="if(event.key==='Enter')submitGate()" />
+          <input type="email" id="inEmail" inputmode="email" autocomplete="email" onkeydown="if(event.key==='Enter')submitGate()" />
+          <button class="btn btn-primary" id="unlockBtnTxt" onclick="return submitGate()"></button>
+          <div class="consent" id="gateConsent"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" id="programNote"></div>
+
+    <div id="unlockedExtra">
+      <div class="homes"><div class="h" id="homesH"></div><div class="s" id="homesS"></div></div>
+      <a href="#" class="btn btn-primary" id="talkBtn" onclick="return talkAgent()"></a>
+    </div>
+
+    <details class="how"><summary id="howSum"></summary><div class="b" id="howBody"></div></details>
+    <div class="disc" id="disclaimer"></div>
+  </div>
+
+  <div class="pw" id="poweredBy" style="display:none"></div>
+</div>
+
+<!-- Form oculto: Netlify lo detecta al desplegar y guarda CADA lead (gratis, sin backend) -->
+<form name="leads" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="text" name="nombre" />
+  <input type="tel" name="telefono" />
+  <input type="email" name="email" />
+  <input type="text" name="idioma" />
+  <input type="text" name="busca" />
+  <input type="text" name="ingreso_mensual" />
+  <input type="text" name="deudas_mensual" />
+  <input type="text" name="down_payment" />
+  <input type="text" name="poder_compra" />
+  <input type="text" name="pago_comodo" />
+  <input type="text" name="agente" />
+  <input name="bot-field" />
+</form>
+
+<script>
+/* ============================================================
+   CONFIG — lo ÚNICO que cambias por cada agente/cliente
+   ============================================================ */
+const CONFIG = {
+  agentName: "Sofía Realty",
+  whatsapp:  "13055550123",        // solo dígitos, con código país (1=USA). SIN + ni espacios
+  logoUrl:   "",                    // opcional
+  defaultLang: "es",
+
+  brand: { primary:"#1f3d34" },     // un solo color de marca; el resto es la paleta premium neutra
+
+  poweredBy: { show:false, text:"", url:"" },
+
+  /* Captura de leads: guarda CADA contacto en Netlify (gratis) apenas deja su teléfono,
+     aunque nunca abra WhatsApp. Déjalo en true si despliegas en Netlify. */
+  leadCapture: { netlifyForms:true },
+
+  /* Datos REALES de mercado — mantenlos al día (esto hace el cálculo certero) */
+  finance: {
+    interestRate: 0.0688, termYears: 30,
+    propertyTaxRate: 0.0105, homesteadExemption: 50000,
+    insuranceHouse: 0.010, insuranceCondo: 0.004, hoaCondoDefault: 500,
+    mipRate: 0.0055, frontEndRatio: 0.31, backEndRatio: 0.43, fhaMinDownPct: 0.035
+  },
+  tiers: { ready: 280000, almost: 160000 }
+};
+
+const I18N = {
+ es:{
+  pill:"Miami · Tu primera casa",
+  wTitle:"¿Para cuánto te alcanza en el 305?",
+  wSub:"Sin fórmulas raras ni letra chiquita. En menos de un minuto te digo tu estimado real.",
+  wBtn:"Dale, empecemos", trust:"Un minuto · Gratis · Cero spam",
+  back:"Atrás", next:"Seguir", seeResult:"Ver mi número",
+  q:{
+   name:{t:"Primero lo primero — ¿cómo te llamas?", s:"Para no tratarte de usted como el banco."},
+   income:{t:"{name}, ¿cuánto entra a la casa al mes?", s:"Lo que ganas antes de que Tío Sam meta la mano."},
+   debts:{t:"¿Cuánto se te va en deudas al mes?", s:"El carro, las tarjetas, esa que prefieres no mirar. Si no tienes, déjalo en cero."},
+   down:{t:"{name}, ¿cuánto tienes guardado para el down payment?", s:"Tranqui, en Miami se arranca con un 3.5%. No hay que ser millonario."},
+   type:{t:"¿Casa o condo para arrancar?", s:"Puedes cambiar de opinión — no es un tatuaje."}
+  },
+  house:"Casa", condo:"Condo",
+  houseDesc:"Tu patio, tu garaje, tu reino.", condoDesc:"Pool, gym y cero grama que cortar.",
+  loadTxt:"Calculando cuánta casa te da Miami…", loadSub:"Tasas reales, números de verdad",
+  loadSteps:["Cruzando las tasas reales de hoy…","Aplicando tu exención homestead…","Buscando tus programas de primerizo…","Midiendo cuánto te da el 305…"],
+  resultEyebrow:"Tu resultado",
+  tierReady:"{name}, estás listo para comprar en Miami. En serio.",
+  tierAlmost:"{name}, tu primera casa en Miami está más cerca de lo que crees.",
+  tierPlan:"{name}, todavía no… pero vas en camino. Y eso se arregla.",
+  taste:"Podrías con un pago de <b>{m}</b> sin sudar.",
+  tastePlan:"Hoy te alcanza para un pago de <b>{m}</b>. Lo demás es plan, no magia.",
+  lockLblPrice:"Tu poder de compra", lockLblPlan:"Tu pago cómodo al mes",
+  unlockBtnPrice:"Ver mi número", unlockBtnPlan:"Ver mi plan",
+  oHeadPrice:"Tu número está listo", oHintPrice:"Déjanos dónde mandártelo y te llega con las propiedades que te cuadran. Cero vendedor pesado.",
+  oHeadPlan:"Tu plan está listo", oHintPlan:"Déjanos dónde mandártelo y te llega el paso a paso con los programas de ayuda para el down.",
+  gatePhonePh:"Tu teléfono (WhatsApp)", gateEmailPh:"Tu correo (opcional)",
+  gateConsent:"Solo {agent} lo ve. Cero spam, va en serio.", gateBad:"Pon un teléfono donde te podamos escribir.",
+  pi:"Hipoteca (capital e interés)", tax:"Property tax (con exención homestead)", ins:"Seguro de la casa",
+  hoa:"HOA / mantenimiento", mip:"Seguro del mortgage (PMI)", monthly:"Pago mensual", downNeeded:"Down payment para arrancar (3.5%)",
+  planRow1:"Ayuda para el down payment", planRow1v:"Calificas",
+  planRow2:"Down payment para arrancar", planRow3:"Plan personalizado", planRow3v:"Incluido",
+  programFha:"Calificarías para programas de primerizos como <b>FHA</b> (con 3.5% de down payment) y la ayuda de <b>Florida Housing</b>. Eso te baja muchísimo la entrada.",
+  programReady:"Con ese down estás parado firme. Es hora de ver propiedades de verdad.",
+  programPlan:"Hay <b>programas en Florida que te ayudan con el down payment</b>. Con un plan de unos meses, esto se hace realidad.",
+  homesH:"Hay propiedades en tu rango ahora mismo.", homesS:"{agent} te las enseña hoy, no la semana que viene.",
+  homesHplan:"Tu plan ya está trazado.", homesSplan:"{agent} te lleva de la mano hasta las llaves.",
+  talkBtn:"Hablar con {agent}",
+  howSum:"¿Cómo sacamos este número?",
+  disclaimer:"Es un estimado con números reales de Miami-Dade, no una pre-aprobación. Tu número final lo definen tu crédito y tu prestamista.",
+  needName:"Escribe tu nombre para seguir."
+ },
+ en:{
+  pill:"Miami · Your first home",
+  wTitle:"How much home can you afford in the 305?",
+  wSub:"No weird formulas, no fine print. In under a minute, your real estimate.",
+  wBtn:"Let's go", trust:"One minute · Free · Zero spam",
+  back:"Back", next:"Next", seeResult:"See my number",
+  q:{
+   name:{t:"First things first — what's your name?", s:"So we don't talk to you like your bank does."},
+   income:{t:"{name}, how much comes into the house each month?", s:"What you earn before Uncle Sam takes his cut."},
+   debts:{t:"How much goes to debts each month?", s:"Car, cards, that one you'd rather not look at. None? Leave it at zero."},
+   down:{t:"{name}, how much have you saved for the down payment?", s:"Relax — in Miami you can start with 3.5%. No need to be a millionaire."},
+   type:{t:"House or condo to start?", s:"You can change your mind — it's not a tattoo."}
+  },
+  house:"House", condo:"Condo",
+  houseDesc:"Your yard, your garage, your kingdom.", condoDesc:"Pool, gym, and zero lawn to mow.",
+  loadTxt:"Calculating how much home Miami gives you…", loadSub:"Real rates, real numbers",
+  loadSteps:["Pulling today's real rates…","Applying your homestead exemption…","Finding your first-time buyer programs…","Measuring what the 305 gives you…"],
+  resultEyebrow:"Your result",
+  tierReady:"{name}, you're ready to buy in Miami. For real.",
+  tierAlmost:"{name}, your first home in Miami is closer than you think.",
+  tierPlan:"{name}, not yet… but you're on your way. And that's fixable.",
+  taste:"You could handle a <b>{m}</b> payment without breaking a sweat.",
+  tastePlan:"Today you can swing a <b>{m}</b> payment. The rest is a plan, not magic.",
+  lockLblPrice:"Your buying power", lockLblPlan:"Your comfortable monthly payment",
+  unlockBtnPrice:"See my number", unlockBtnPlan:"See my plan",
+  oHeadPrice:"Your number is ready", oHintPrice:"Tell us where to send it and you'll get the homes that fit you. No pushy salesperson.",
+  oHeadPlan:"Your plan is ready", oHintPlan:"Tell us where to send it and you'll get the step-by-step plan and down payment help programs.",
+  gatePhonePh:"Your phone (WhatsApp)", gateEmailPh:"Your email (optional)",
+  gateConsent:"Only {agent} sees this. Zero spam, promise.", gateBad:"Enter a phone where we can reach you.",
+  pi:"Mortgage (principal & interest)", tax:"Property tax (homestead exemption)", ins:"Home insurance",
+  hoa:"HOA / maintenance", mip:"Mortgage insurance (PMI)", monthly:"Monthly payment", downNeeded:"Down payment to start (3.5%)",
+  planRow1:"Down payment assistance", planRow1v:"You qualify",
+  planRow2:"Down payment to start", planRow3:"Personalized plan", planRow3v:"Included",
+  programFha:"You'd qualify for first-time buyer programs like <b>FHA</b> (with 3.5% down) and <b>Florida Housing</b> assistance, which lowers the entry a lot.",
+  programReady:"With that down payment you're standing firm. Time to see real homes.",
+  programPlan:"There are <b>Florida programs that help with your down payment</b>. With a few months' plan, this becomes real.",
+  homesH:"There are homes in your range right now.", homesS:"{agent} will show them to you today, not next week.",
+  homesHplan:"Your plan is mapped out.", homesSplan:"{agent} will walk you all the way to the keys.",
+  talkBtn:"Talk to {agent}",
+  howSum:"How we got this number",
+  disclaimer:"An estimate using real Miami-Dade numbers, not a pre-approval. Your final number depends on your credit and lender.",
+  needName:"Enter your name to continue."
+ }
+};
+
+/* ===================== state ===================== */
+let lang=CONFIG.defaultLang, step=0, lastResult=null;
+const A={name:"",phone:"",email:"",income:6000,debts:500,down:20000,type:"house"};
+const STEPS=["name","income","debts","down","type"];
+const SLIDER={income:{min:1500,max:25000,st:100,suffix:true},debts:{min:0,max:6000,st:50,suffix:true},down:{min:0,max:200000,st:1000,suffix:false}};
+
+const fmt=n=>new Intl.NumberFormat(lang==="es"?"es-US":"en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(Math.round(n));
+const T=()=>I18N[lang];
+const sfx=()=>lang==="es"?" /mes":" /mo";
+
+/* ===================== brand ===================== */
+function applyBrand(){
+  document.documentElement.style.setProperty("--primary",CONFIG.brand.primary);
+  document.documentElement.style.setProperty("--wa",CONFIG.brand.primary);
+  document.getElementById("brandName").textContent=CONFIG.agentName;
+  if(CONFIG.logoUrl){const l=document.getElementById("brandLogo");l.src=CONFIG.logoUrl;l.style.display="block";}
+  if(CONFIG.poweredBy.show){const p=document.getElementById("poweredBy");p.style.display="block";
+    p.innerHTML=CONFIG.poweredBy.url?`<a href="${CONFIG.poweredBy.url}" target="_blank" rel="noopener">${CONFIG.poweredBy.text}</a>`:CONFIG.poweredBy.text;}
+}
+
+/* ===================== language ===================== */
+function setLang(l){
+  lang=l;document.documentElement.lang=l;
+  document.getElementById("btnEs").classList.toggle("on",l==="es");
+  document.getElementById("btnEn").classList.toggle("on",l==="en");
+  renderStatic();
+  if(!document.getElementById("screen-quiz").classList.contains("hidden")) renderStep();
+  if(lastResult) renderResult(lastResult);
+}
+function renderStatic(){
+  const t=T();
+  document.getElementById("w-pill").textContent=t.pill;
+  document.getElementById("w-title").textContent=t.wTitle;
+  document.getElementById("w-sub").textContent=t.wSub;
+  document.getElementById("w-btn").textContent=t.wBtn;
+  document.getElementById("w-trust").textContent=t.trust;
+  document.getElementById("loadTxt").textContent=t.loadTxt;
+  document.getElementById("loadSub").textContent=t.loadSub;
+  document.getElementById("howSum").textContent=t.howSum;
+  document.getElementById("disclaimer").textContent=t.disclaimer;
+}
+
+/* ===================== quiz ===================== */
+function show(id){["screen-welcome","screen-quiz","screen-loading","screen-result"].forEach(s=>document.getElementById(s).classList.toggle("hidden",s!==id));}
+function startQuiz(){step=0;show("screen-quiz");renderStep();}
+function fillSlider(sl){const p=(sl.value-sl.min)/(sl.max-sl.min)*100;sl.style.background=`linear-gradient(90deg,var(--primary) ${p}%,var(--track) ${p}%)`;}
+
+function renderStep(){
+  const t=T(),key=STEPS[step];
+  document.getElementById("qDots").innerHTML=STEPS.map((_,i)=>`<i class="${i<step?'done':i===step?'cur':''}"></i>`).join("");
+  document.getElementById("qTitle").textContent=t.q[key].t.replace("{name}",A.name||"");
+  document.getElementById("qSub").textContent=t.q[key].s;
+  const react=reactionFor(key),rEl=document.getElementById("qReact");
+  rEl.classList.remove("in");rEl.textContent=react;
+  if(react)setTimeout(()=>rEl.classList.add("in"),80);
+  const body=document.getElementById("qBody");
+  if(key==="name"){
+    body.innerHTML=`<input type="text" id="inName" value="${A.name.replace(/"/g,'&quot;')}" placeholder="${lang==="es"?"Tu nombre":"Your name"}" autocomplete="given-name" />`;
+    setTimeout(()=>{const el=document.getElementById("inName");el.focus();el.oninput=e=>A.name=e.target.value;},40);
+  }else if(key==="type"){
+    body.innerHTML=`<div class="choices">
+      <div class="choice" id="chHouse" onclick="setType('house')"><div class="ch-txt"><div class="ch-h">${t.house}</div><div class="ch-s">${t.houseDesc}</div></div><span class="mk"></span></div>
+      <div class="choice" id="chCondo" onclick="setType('condo')"><div class="ch-txt"><div class="ch-h">${t.condo}</div><div class="ch-s">${t.condoDesc}</div></div><span class="mk"></span></div></div>`;
+    setType(A.type);
+  }else{
+    const s=SLIDER[key];
+    body.innerHTML=`<div class="valbig" id="valBig"></div>
+      <div class="live" id="liveQuip"></div>
+      <input type="range" id="sl" min="${s.min}" max="${s.max}" step="${s.st}" value="${A[key]}" />
+      <div class="ends"><span>${fmt(s.min)}</span><span>${fmt(s.max)}${s.max>=200000?"+":""}</span></div>`;
+    const sl=document.getElementById("sl"),lq=document.getElementById("liveQuip");
+    let lastQuip="";
+    const upd=()=>{
+      A[key]=+sl.value;
+      document.getElementById("valBig").innerHTML=fmt(A[key])+(s.suffix?`<small>${sfx()}</small>`:"");
+      fillSlider(sl);
+      const q=sliderQuip(key);
+      if(q!==lastQuip){lastQuip=q;lq.textContent=q;lq.classList.remove("pop");void lq.offsetWidth;lq.classList.add("pop");}
+    };
+    sl.oninput=upd;upd();
+  }
+  document.getElementById("backBtn").classList.toggle("hidden",step===0);
+  document.getElementById("backBtn").textContent=t.back;
+  document.getElementById("nextBtn").textContent=step===STEPS.length-1?t.seeResult:t.next;
+}
+function setType(tp){A.type=tp;const h=document.getElementById("chHouse"),c=document.getElementById("chCondo");if(h&&c){h.classList.toggle("on",tp==="house");c.classList.toggle("on",tp==="condo");}}
+/* el calculador "reacciona" a cada respuesta — se siente vivo, no un formulario */
+function reactionFor(key){
+  const es=lang==="es";
+  if(key==="income") return es?`Dale, ${A.name}. Vamos al grano.`:`Let's go, ${A.name}. Straight to it.`;
+  if(key==="debts"){
+    if(A.income>=8000) return es?"Con ese ingreso, el 305 te abre las puertas de par en par.":"With that income, the 305 throws the doors wide open.";
+    if(A.income>=4500) return es?"Buen punto de arranque. Dale, seguimos.":"Solid launch point. Let's keep rolling.";
+    return es?"Tranqui, con eso trabajamos.":"Relax, we can work with that.";
+  }
+  if(key==="down"){
+    if(A.debts===0) return es?"Cero deudas — eso juega fuerte a tu favor.":"Zero debt — that plays hard in your favor.";
+    if(A.debts<=A.income*0.15) return es?"Tus deudas están bajo control. Bien ahí.":"Your debts are under control. Nice.";
+    return es?"Lo metemos en la cuenta, tranqui.":"We'll factor that in, no stress.";
+  }
+  if(key==="type"){
+    if(A.down>=40000) return es?"Con ese down llegas lejos en el 305.":"That down takes you far in the 305.";
+    if(A.down<=8000) return es?"Tranqui — en Miami se arranca con poco.":"Relax — in Miami you start small.";
+    return es?"Buen colchón para arrancar.":"Nice cushion to start.";
+  }
+  return "";
+}
+/* reacción EN VIVO mientras arrastras la barra — Miami responde a cada número */
+function sliderQuip(key){
+  const es=lang==="es",v=A[key];
+  if(key==="income"){
+    if(v<2200)  return es?"Con eso, un cafecito en la ventanita. La casa la montamos con plan, dale.":"That buys cafecitos, not Brickell — yet. Relax, we've got a plan.";
+    if(v<3200)  return es?"Vamos calentando el motor. El 305 te para bola.":"Engine's warming up. The 305 is listening.";
+    if(v<4500)  return es?"Oye, con eso ya se habla en Miami.":"Hey now — that talks in Miami.";
+    if(v<6500)  return es?"Eso suena, mi gente. El 305 te escucha.":"Now we're talking. The 305 hears you loud.";
+    if(v<9000)  return es?"¡Tremendo! Miami te abre la puerta.":"There it is — Miami opens the door.";
+    if(v<13000) return es?"Okay okay, mírate. El 305 te quiere y se nota.":"Okay okay, look at you. The 305 wants you.";
+    if(v<18000) return es?"Con eso mandas tú. ¿Brickell o la playa?":"You call the shots now. Brickell or the beach?";
+    return es?"Wow. Coral Gables te está coqueteando.":"Wow. Coral Gables is flirting with you.";
+  }
+  if(key==="debts"){
+    if(v===0)   return es?"Cero deudas. El banco te va a amar.":"Zero debt. The bank's gonna love you.";
+    if(v<600)   return es?"Eso no asusta a nadie. Dale.":"That scares no one. Keep going.";
+    if(v<1200)  return es?"Bajo control. Miami ni se inmuta.":"Under control. Miami doesn't blink.";
+    if(v<2000)  return es?"Ok, lo tenemos en el radar.":"Okay — it's on the radar.";
+    if(v<3000)  return es?"Pesan un chin, pero nada que un plan no arregle.":"Weighs a bit, but nothing a plan can't fix.";
+    if(v<4200)  return es?"Eso ya se siente. Lo metemos en el plan.":"That's starting to add up. Into the plan it goes.";
+    return es?"Eso hay que bajarlo —y te ayudamos. Tranqui, se hace.":"We've gotta trim that — and we'll help. It's doable.";
+  }
+  if(key==="down"){
+    if(v===0)    return es?"Sin down. Relájate, en el 305 se arranca con 3.5%.":"No down? Relax — in the 305 you start with 3.5%.";
+    if(v<8000)   return es?"Es un comienzo. En Miami se empieza con poco y se llega.":"It's a start. In Miami you begin small and get there.";
+    if(v<20000)  return es?"Ya tienes con qué arrancar. Bien ahí.":"You've got enough to start. Nice.";
+    if(v<40000)  return es?"Buen colchón. Pisas firme en el 305.":"Solid cushion. You stand firm in the 305.";
+    if(v<70000)  return es?"¡Oye! Con ese down vas en serio.":"Hey now — that down means business.";
+    if(v<120000) return es?"Tremendo down. Miami te está esperando.":"Serious down. Miami's waiting for you.";
+    return es?"Con eso, medio Miami es tuyo. Casi, casi.":"With that, half of Miami's yours. Almost, almost.";
+  }
+  return "";
+}
+function prevStep(){if(step>0){step--;renderStep();}}
+function nextStep(){
+  if(STEPS[step]==="name"&&!A.name.trim()){alert(T().needName);return;}
+  if(step<STEPS.length-1){step++;renderStep();}else runReveal();
+}
+
+/* ===================== finance (certero) ===================== */
+function monthlyForPrice(P){
+  const f=CONFIG.finance,down=A.down,loan=Math.max(0,P-down),r=f.interestRate/12,n=f.termYears*12;
+  const pi=loan>0?loan*r/(1-Math.pow(1+r,-n)):0;
+  const tax=Math.max(0,P-f.homesteadExemption)*f.propertyTaxRate/12;
+  const ins=P*(A.type==="condo"?f.insuranceCondo:f.insuranceHouse)/12;
+  const hoa=A.type==="condo"?f.hoaCondoDefault:0;
+  const dpPct=P>0?down/P:1, mip=dpPct<0.20?loan*f.mipRate/12:0;
+  return {total:pi+tax+ins+hoa+mip,pi,tax,ins,hoa,mip,dpPct};
+}
+function compute(){
+  const f=CONFIG.finance,maxHousing=Math.max(0,Math.min(A.income*f.frontEndRatio,A.income*f.backEndRatio-A.debts));
+  let lo=0,hi=4000000;for(let i=0;i<44;i++){const m=(lo+hi)/2;if(monthlyForPrice(m).total<=maxHousing)lo=m;else hi=m;}
+  const price=Math.max(A.down,lo);
+  return {price,maxHousing,br:monthlyForPrice(price),downNeeded:price*f.fhaMinDownPct};
+}
+function tierOf(p){return p>=CONFIG.tiers.ready?"ready":p>=CONFIG.tiers.almost?"almost":"plan";}
+function runReveal(){
+  lastResult=compute();show("screen-loading");
+  const steps=T().loadSteps,el=document.getElementById("loadTxt");let i=0;
+  const paint=()=>{el.classList.remove("in");el.textContent=steps[i];setTimeout(()=>el.classList.add("in"),40);};
+  paint();
+  const iv=setInterval(()=>{i++;if(i<steps.length)paint();},620);
+  setTimeout(()=>{clearInterval(iv);renderResult(lastResult);show("screen-result");window.scrollTo({top:0,behavior:"smooth"});},620*steps.length+300);
+}
+
+/* ===================== result ===================== */
+function renderResult(res){
+  const t=T(),tier=tierOf(res.price),br=res.br,isPlan=tier==="plan";
+  document.getElementById("vEyebrow").textContent=t.resultEyebrow;
+  document.getElementById("vHead").textContent=(tier==="ready"?t.tierReady:tier==="almost"?t.tierAlmost:t.tierPlan).replace("{name}",A.name);
+  document.getElementById("vTaste").innerHTML=(isPlan?t.tastePlan:t.taste).replace("{m}",fmt(res.maxHousing)+(lang==="es"?" /mes":" /mo"));
+
+  document.getElementById("lockLbl").textContent=isPlan?t.lockLblPlan:t.lockLblPrice;
+  document.getElementById("lockPrice").textContent=isPlan?fmt(res.maxHousing):fmt(res.price);
+  document.getElementById("lockRng").textContent=isPlan?(lang==="es"?"Pago cómodo estimado":"Estimated comfortable payment"):fmt(res.price*0.94)+" – "+fmt(res.price);
+
+  let html;
+  if(isPlan){
+    html=`<div class="row"><span class="k">${t.planRow1}</span><span class="v">${t.planRow1v}</span></div>
+      <div class="row"><span class="k">${t.planRow2}</span><span class="v">${fmt(res.downNeeded)}</span></div>
+      <div class="row"><span class="k">${t.planRow3}</span><span class="v">${t.planRow3v}</span></div>`;
+  }else{
+    const rows=[[t.pi,br.pi],[t.tax,br.tax],[t.ins,br.ins]];
+    if(br.hoa>0)rows.push([t.hoa,br.hoa]); if(br.mip>0)rows.push([t.mip,br.mip]);
+    html=rows.map(r=>`<div class="row"><span class="k">${r[0]}</span><span class="v">${fmt(r[1])}</span></div>`).join("");
+    html+=`<div class="row total"><span class="k">${t.monthly}</span><span class="v">${fmt(br.total)}</span></div>`;
+    html+=`<div class="row"><span class="k">${t.downNeeded}</span><span class="v">${fmt(res.downNeeded)}</span></div>`;
+  }
+  document.getElementById("lockBrk").innerHTML=html;
+
+  document.getElementById("oHead").textContent=isPlan?t.oHeadPlan:t.oHeadPrice;
+  document.getElementById("oHint").textContent=isPlan?t.oHintPlan:t.oHintPrice;
+  document.getElementById("unlockBtnTxt").textContent=isPlan?t.unlockBtnPlan:t.unlockBtnPrice;
+  document.getElementById("inPhone").placeholder=t.gatePhonePh;
+  document.getElementById("inEmail").placeholder=t.gateEmailPh;
+  document.getElementById("gateConsent").textContent=t.gateConsent.replace("{agent}",CONFIG.agentName);
+  document.getElementById("programNote").innerHTML=isPlan?t.programPlan:(br.dpPct<0.20?t.programFha:t.programReady);
+  document.getElementById("homesH").textContent=isPlan?t.homesHplan:t.homesH;
+  document.getElementById("homesS").textContent=(isPlan?t.homesSplan:t.homesS).replace("{agent}",CONFIG.agentName);
+  document.getElementById("talkBtn").textContent=t.talkBtn.replace("{agent}",CONFIG.agentName);
+
+  const f=CONFIG.finance;
+  document.getElementById("howBody").innerHTML=(lang==="es"?
+   `<ul><li>Tasa hipotecaria ${(f.interestRate*100).toFixed(2)}% a ${f.termYears} años</li>
+    <li>Impuestos Miami-Dade ${(f.propertyTaxRate*100).toFixed(2)}% con exención homestead de ${fmt(f.homesteadExemption)}</li>
+    <li>Seguro Florida ${A.type==="condo"?(f.insuranceCondo*100).toFixed(2)+"% (condominio)":(f.insuranceHouse*100).toFixed(2)+"% (casa)"}</li>
+    ${A.type==="condo"?`<li>Cuota de condominio estimada ${fmt(f.hoaCondoDefault)} /mes</li>`:""}
+    <li>Hasta ${(f.frontEndRatio*100)}% del ingreso (${(f.backEndRatio*100)}% con deudas)</li>
+    <li>Vía FHA primerizos: ${(f.fhaMinDownPct*100)}% de enganche mínimo</li></ul>`
+   :
+   `<ul><li>Mortgage rate ${(f.interestRate*100).toFixed(2)}% over ${f.termYears} yrs</li>
+    <li>Miami-Dade tax ${(f.propertyTaxRate*100).toFixed(2)}% with ${fmt(f.homesteadExemption)} homestead exemption</li>
+    <li>Florida insurance ${A.type==="condo"?(f.insuranceCondo*100).toFixed(2)+"% (condo)":(f.insuranceHouse*100).toFixed(2)+"% (house)"}</li>
+    ${A.type==="condo"?`<li>Estimated HOA ${fmt(f.hoaCondoDefault)} /mo</li>`:""}
+    <li>Up to ${(f.frontEndRatio*100)}% of income (${(f.backEndRatio*100)}% with debts)</li>
+    <li>First-time FHA path: ${(f.fhaMinDownPct*100)}% minimum down</li></ul>`);
+
+  if(!res._unlocked){
+    document.getElementById("lockContent").classList.add("locked");
+    document.getElementById("lockOverlay").style.display="flex";
+    document.getElementById("unlockedExtra").style.display="none";
+  }
+}
+
+/* ===================== WhatsApp (gratis, sin API) ===================== */
+function waMessage(){
+  const r=lastResult,tier=tierOf(r.price),typeLabel=A.type==="condo"?T().condo:T().house;
+  if(lang==="es"){
+    const intro=tier==="plan"?`Hola, soy ${A.name}. Hice el test y quiero mi plan para comprar mi primera casa en Miami.`:`Hola, soy ${A.name}. Hice el test y quiero ver propiedades en mi rango.`;
+    return `${intro}\n\nTeléfono: ${A.phone}${A.email?`\nCorreo: ${A.email}`:""}\nPoder de compra: ${tier==="plan"?"plan personalizado":fmt(r.price)}\nPago cómodo: ${fmt(r.maxHousing)} /mes\nIngreso: ${fmt(A.income)} /mes\nDeudas: ${fmt(A.debts)} /mes\nDown payment: ${fmt(A.down)}\nBusca: ${typeLabel}`;
+  }
+  const intro=tier==="plan"?`Hi, I'm ${A.name}. I took the quiz and I want my plan to buy my first home in Miami.`:`Hi, I'm ${A.name}. I took the quiz and I'd like to see homes in my range.`;
+  return `${intro}\n\nPhone: ${A.phone}${A.email?`\nEmail: ${A.email}`:""}\nBuying power: ${tier==="plan"?"personalized plan":fmt(r.price)}\nComfortable payment: ${fmt(r.maxHousing)} /mo\nIncome: ${fmt(A.income)} /mo\nDebts: ${fmt(A.debts)} /mo\nDown payment: ${fmt(A.down)}\nLooking for: ${typeLabel}`;
+}
+function openWA(){window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(waMessage())}`,"_blank");}
+
+/* Compuerta: captura el lead (teléfono) ANTES de revelar. Aquí el agente ya "tiene" al cliente. */
+function submitGate(){
+  const ph=document.getElementById("inPhone"),em=document.getElementById("inEmail");
+  if(ph.value.replace(/\D/g,"").length<7){ph.classList.add("bad");ph.placeholder=T().gateBad;ph.focus();return false;}
+  ph.classList.remove("bad");
+  A.phone=ph.value.trim();A.email=em.value.trim();
+  submitLead();   // guarda el lead en Netlify (gratis) — pase lo que pase después
+  reveal();
+  return false;
+}
+function submitLead(){
+  if(!CONFIG.leadCapture||!CONFIG.leadCapture.netlifyForms)return;
+  const r=lastResult,tier=tierOf(r.price);
+  const data={
+    "form-name":"leads","bot-field":"",
+    nombre:A.name,telefono:A.phone,email:A.email||"",
+    idioma:lang,busca:A.type==="condo"?T().condo:T().house,
+    ingreso_mensual:fmt(A.income),deudas_mensual:fmt(A.debts),down_payment:fmt(A.down),
+    poder_compra:tier==="plan"?(lang==="es"?"Plan personalizado":"Personalized plan"):fmt(r.price),
+    pago_comodo:fmt(r.maxHousing),agente:CONFIG.agentName
+  };
+  fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams(data).toString()}).catch(()=>{});
+}
+function reveal(){
+  lastResult._unlocked=true;
+  document.getElementById("lockContent").classList.remove("locked");
+  document.getElementById("lockOverlay").style.display="none";
+  document.getElementById("unlockedExtra").style.display="block";
+}
+function talkAgent(){openWA();return false;}
+
+/* ===================== init ===================== */
+applyBrand();renderStatic();
+</script>
+</body>
+</html>

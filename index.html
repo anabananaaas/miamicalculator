@@ -25,7 +25,7 @@
   html,body{height:100%}
   body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;
     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-  .app{max-width:430px;margin:0 auto;min-height:100%;background:var(--card);
+  .app{max-width:430px;margin:0 auto;min-height:100dvh;background:var(--card);
     display:flex;flex-direction:column;box-shadow:0 0 80px rgba(22,20,15,.06)}
 
   /* topbar */
@@ -39,6 +39,8 @@
 
   .eyebrow{font-size:11px;font-weight:600;letter-spacing:2.4px;text-transform:uppercase;color:var(--primary)}
   .screen{flex:1;display:flex;flex-direction:column;padding:30px 26px 26px}
+  #screen-welcome,#screen-quiz{justify-content:center}
+  #screen-quiz{position:relative;padding-top:64px}
 
   h1{font-family:var(--serif);font-weight:500;font-size:33px;line-height:1.12;letter-spacing:-.4px;color:var(--ink)}
   .lead{color:var(--muted);font-size:16px;margin-top:14px;max-width:30ch}
@@ -54,7 +56,7 @@
   .btn-text{border:0;background:transparent;color:var(--muted);font-family:var(--sans);font-size:15px;font-weight:500;padding:14px;width:auto;cursor:pointer}
 
   .spacer{flex:1}
-  .agentcard{display:flex;align-items:center;gap:13px;padding:14px 15px;border:1px solid var(--line);
+  .agentcard{display:flex;align-items:center;gap:13px;padding:14px 15px;margin-top:34px;border:1px solid var(--line);
     border-radius:16px;background:linear-gradient(170deg,#fff,var(--primary-soft))}
   .agent-ph{width:56px;height:56px;border-radius:14px;object-fit:cover;object-position:center top;flex:none;background:var(--primary-soft)}
   .agent-mono{width:56px;height:56px;border-radius:14px;flex:none;display:flex;align-items:center;justify-content:center;
@@ -67,7 +69,7 @@
   .trust{margin-top:18px;text-align:center;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted)}
 
   /* quiz */
-  .dots{display:flex;gap:7px;margin-bottom:28px}
+  .dots{display:flex;gap:7px;position:absolute;top:30px;left:26px}
   .dots i{width:7px;height:7px;border-radius:99px;background:var(--line);transition:width .35s ease,background .35s ease}
   .dots i.done{background:var(--primary)}
   .dots i.cur{width:24px;background:var(--primary)}
@@ -192,11 +194,9 @@
 
   <!-- WELCOME -->
   <div class="screen" id="screen-welcome">
-    <div class="spacer"></div>
     <div class="eyebrow" id="w-pill"></div>
     <h1 id="w-title" style="margin-top:18px"></h1>
     <p class="lead" id="w-sub"></p>
-    <div class="spacer"></div>
     <div class="agentcard">
       <img class="agent-ph" id="agentPhoto" style="display:none" alt="" />
       <div class="agent-mono" id="agentMono"></div>
@@ -219,7 +219,6 @@
     <div class="qsub" id="qSub"></div>
     <div class="qreact" id="qReact"></div>
     <div class="qbody" id="qBody"></div>
-    <div class="spacer"></div>
     <div class="navrow">
       <button class="btn-text hidden" id="backBtn" onclick="prevStep()"></button>
       <button class="btn btn-primary" id="nextBtn" onclick="nextStep()"></button>
@@ -345,7 +344,7 @@ const I18N = {
   loadTxt:"Calculando cuánta casa te da Miami…", loadSub:"Tasas reales, números de verdad",
   loadSteps:["Cruzando las tasas reales de hoy…","Aplicando tu exención homestead…","Buscando tus programas de primerizo…","Midiendo cuánto te da el 305…"],
   resultEyebrow:"Tu resultado",
-  tierReady:"{name}, estás listo para comprar en Miami. En serio.",
+  tierReady:"{name}, ya puedes comprar tu casa en Miami. En serio.",
   tierAlmost:"{name}, tu primera casa en Miami está más cerca de lo que crees.",
   tierPlan:"{name}, todavía no… pero vas en camino. Y eso se arregla.",
   taste:"Podrías con un pago de <b>{m}</b> sin sudar.",
